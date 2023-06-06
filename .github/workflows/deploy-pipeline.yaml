@@ -35,12 +35,29 @@ jobs:
             cd function
             python -m pip install --upgrade pip
             if [ -f requirements.txt ]; then pip install -r requirements.txt -t .; fi 
+            
       - name: Zip bundle
         run: |
             cd function
             zip -r ../${{ github.sha }}.zip .
+            
       - name: Archive artifact
         uses: actions/upload-artifact@v2
         with:
           name: zipped-bundle
           path: ${{ github.sha }}.zip
+          
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create release
+      id: create_release
+      uses: action/create-release@v2
+      env: 
+        GITHUB_TOKEN: ${{ secrets.github_token
+      with: 
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        body: New release for ${{ github.sha }}. Release notes can be found in the docs.
+        draft: false
+        prerelease: false
