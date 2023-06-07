@@ -84,7 +84,7 @@ jobs:
     needs: lint
     steps:
       - name: Checkout code 
-        uses: actions/ckeckout@v2
+        uses: actions/checkout@v2
       - name: Create docs folder
         run: mkdir docs
       - name: Convert md to html
